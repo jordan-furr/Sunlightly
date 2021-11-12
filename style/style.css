@@ -1,0 +1,38 @@
+
+/*Elements*/
+/***************************************/
+button {
+  width: 180px;
+  height: 60px;
+  color: blue;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: green;
+  size: 2em;
+}
+
+/*Classes*/
+/***************************************/
+
+.container {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.main {
+  text-align: center;
+}
+
+.authenticate {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
