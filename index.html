@@ -13,18 +13,68 @@
 
   </head>
   <body>
-    
+    <div id='app'>
 
-      <!-- <div class="container">
-          <div class="main">
-              <h1>Welcome to Sunlightly!</h1>
-              <p>Please log in below</p>
+      <div id="login-div" v-bind:class="login_class">
+        <div class="sunlightly-gradient jumbotron">
+          <div class="container">
+            <h1 id="sunlightly-logo" class="display-1 text-center font-weight-bold">Sunlightly</h1>
           </div>
-          <div class="authenticate">
-              <button> Log in </button>
-              <button> Sign up </button>
+        </div>
+        <div id="login-content-div">
+          <div>
+            <h1 class="text-center"><strong>Let's get growing!</strong></h1>
+            <h3 class="text-center">Welcome to your activity tracker</h3>
+            <h3 class="text-center">tool with plant visualization</h3>
           </div>
-      </div> -->
+          <div class="form-outline">
+            <div class="col-xs-3">
+              <label class="form-label login-lb" for="typeText">Username</label>
+              <input v-model="login_username" type="text" id="login-username-input" class="form-control input-lg" />
+              <label class="form-label login-lb" for="typeText">Password</label>
+              <input v-model="login_password" type="text" id="login-password-input" class="form-control input-lg" />
+              <button v-on:click="sendLogin" id="login-submit-button" type="submit" class="btn btn-primary">Log In</button>
+              <button v-on:click="redirectSignUp" id="sign-up-submit-button" type="submit" class="btn btn-primary">New User? Sign Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sign-up-div" v-bind:class="sign_up_class">
+        <div class="sunlightly-gradient jumbotron">
+          <div class="container">
+            <h1 id="sunlightly-logo2" class="display-1 text-center font-weight-bold">Sunlightly</h1>
+          </div>
+        </div>
+        <div>
+          <div class="form-outline col-md-6">
+            <div class="col-xs-6">
+              <h1><strong>Sign Up</strong></h1>
+              <label class="form-label login-lb" for="typeText">Username</label>
+              <input v-model="new_username" type="text" id="login-username-input" class="form-control input-lg" />
+              <label class="form-label login-lb" for="typeText">Password</label>
+              <input v-model="new_password" type="text" id="login-password-input" class="form-control input-lg" />
+              <label class="form-label login-lb" for="typeText">Confirm Password</label>
+              <input v-model="new_confirm_password" type="text" id="login-password-input" class="form-control input-lg" />
+              <button v-on:click="sendSignUp" id="login-submit-button" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+          <div id="how-to" class="col-md-6">
+            <h1><strong>How To Play</h1></strong>
+            <h4>First, click "choose plant" to add a new plant to your garden</h4>
+            <h4>Each plant comes with a corresponding activity</h4>
+            <h4>First, check your plant's activity bonus. Then spend time playing outside</h4>
+            <h4>Input your total time outside in the sunlight field. Sunlight grows all your plants slightly</h4>
+            <h4>Input all time corresponding to a specific plant's acitivity in the water field. Water grows a specific plant</h4>
+            <h4>If you completed the activity bonus for a plant, click the activity bonus button. Completing the activity bonus significantly grows the corresponding plant</h4>
+          </div>
+        </div>
+      </div>
+
+      <div id="main-screen-div" v-bind:class="main_screen_class">
+        <p>Main Screen</p>
+      </div>
+    </div>
 
       <script src="scripts/page.js"></script>
   </body>
