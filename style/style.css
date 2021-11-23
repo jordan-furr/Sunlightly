@@ -37,7 +37,7 @@
 }
 
 .sunlightly-gradient {
-  height: 250px
+  height: 250px;
   margin: 0px;
   background: #ddd;
   background-image: var(--gradient);
