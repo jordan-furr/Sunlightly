@@ -63,3 +63,46 @@
 #how-to {
   
 }
+
+#main-screen-div {
+  height: 100%;
+  background-color: #92e29f;
+  padding: 20px;
+}
+.main-page-headers {
+  font-size: 42px;
+}
+#sunlight-input {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+#flowerpot-img {
+  width: 215px;
+  height: 200px;
+}
+#flowerpots-div {
+  margin-top: 150px;
+}
+
+#plant-selection-div {
+  height: 100%;
+  background-color: #92e29f;
+  padding: 20px;
+}
+.clickable {
+  cursor: pointer;
+}
+.selectionHeaders {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 60px;
+}
+
+#activity-selection-div {
+  height: 100%;
+  background-color: #92e29f;
+  padding: 20px;
+}
+.activity-options {
+  margin-bottom: 125px;
+}

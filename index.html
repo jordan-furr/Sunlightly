@@ -5,7 +5,8 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -34,8 +35,8 @@
               <input v-model="login_username" type="text" id="login-username-input" class="form-control input-lg" />
               <label class="form-label login-lb" for="typeText">Password</label>
               <input v-model="login_password" type="text" id="login-password-input" class="form-control input-lg" />
-              <button v-on:click="sendLogin" id="login-submit-button" type="submit" class="btn btn-primary">Log In</button>
-              <button v-on:click="redirectSignUp" id="sign-up-submit-button" type="submit" class="btn btn-primary">New User? Sign Up</button>
+              <button v-on:click="sendLogin" id="login-submit-button" type="submit" class="btn btn-primary btn-lg">Log In</button>
+              <button v-on:click="redirectSignUp" id="sign-up-submit-button" type="submit" class="btn btn-primary btn-lg">New User? Sign Up</button>
             </div>
           </div>
         </div>
@@ -57,7 +58,7 @@
               <input v-model="new_password" type="text" id="login-password-input" class="form-control input-lg" />
               <label class="form-label login-lb" for="typeText">Confirm Password</label>
               <input v-model="new_confirm_password" type="text" id="login-password-input" class="form-control input-lg" />
-              <button v-on:click="sendSignUp" id="login-submit-button" type="submit" class="btn btn-primary">Submit</button>
+              <button v-on:click="sendSignUp" id="login-submit-button" type="submit" class="btn btn-primary btn-lg">Submit</button>
             </div>
           </div>
           <div id="how-to" class="col-md-6">
@@ -73,8 +74,109 @@
       </div>
 
       <div id="main-screen-div" v-bind:class="main_screen_class">
-        <p>Main Screen</p>
+        <div class="row">
+          <div class="col-md-4">
+            <h1 class="main-page-headers" id="sunlightly-logo">Sunlightly</h1>
+          </div>
+          <div class="col-md-4">
+            <h1 class="main-page-headers" style="text-align:center;">{{ new_username === "" ? login_username : new_username }}'s Garden </h1>
+          </div>
+          <div class="col-md-4">
+            <button v-on:click="logOut" id="logout-button" type="button" class="btn btn-danger btn-lg" style="float:right;">Log Out</button>
+          </div>
+        </div>
+        <div class="row" id="sunlight-input">
+          <div class="col-md-2">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control input-sm" placeholder="Input hours spent outdoors" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button v-on:click="addPlant" id="add-plant-button" type="button" class="btn btn-success btn-lg">Add Plants</button>
+        </div>
+        <div class="row" id="flowerpots-div">
+          <div class="col-md-2"></div>
+          <div class="col-md-2 text-center">
+            <img src="flowerpot.png" id="flowerpot-img"/>
+            <h2>Activity</h2>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+              </div>
+            </div>
+            <h2>Bonus Activity</h2>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2 text-center">
+            <img src="flowerpot.png" id="flowerpot-img"/>
+            <h2>Activity</h2>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+              </div>
+            </div>
+            <h2>Bonus Activity</h2>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-2 text-center">
+            <img src="flowerpot.png" id="flowerpot-img"/>
+            <h2>Activity</h2>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+              </div>
+            </div>
+            <h2>Bonus Activity</h2>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
       </div>
+
+      <div id="plant-selection-div" v-bind:class="plant_selection_class">
+        <h1 class="display-2 selectionHeaders"><strong>Select a plant!</strong></h1>
+        <div class="row">
+          <div class="col-md-3 text-center">
+            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
+            <h1>Flower type</h1>
+          </div>
+          <div class="col-md-3 text-center">
+            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
+            <h1>Flower type</h1>
+          </div>
+          <div class="col-md-3 text-center">
+            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
+            <h1>Flower type</h1>
+          </div>
+          <div class="col-md-3 text-center">
+            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
+            <h1>Flower type</h1>
+          </div>
+        </div>
+      </div>
+
+      <div id="activity-selection-div" v-bind:class="activity_selection_class">
+        <h1 class="display-2 selectionHeaders"><strong>Select an activity for this plant!</strong></h1>
+        <div class="col-md-4 text-center activity-options">
+          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
+        </div>
+        <div class="col-md-4 text-center activity-options">
+          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
+        </div>
+        <div class="col-md-4 text-center activity-options">
+          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
+        </div>
+        <div class="col-md-4 text-center activity-options">
+          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
+        </div>
+      </div>
+
     </div>
 
       <script src="scripts/page.js"></script>
