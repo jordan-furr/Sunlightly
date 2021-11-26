@@ -77,11 +77,14 @@
   margin-bottom: 10px;
 }
 #flowerpot-img {
-  width: 215px;
-  height: 200px;
+  width: 200px;
+  height: 175px;
 }
 #flowerpots-div {
   margin-top: 150px;
+}
+.progress-bar-div {
+  margin-top: 10px;
 }
 
 #plant-selection-div {

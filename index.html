@@ -101,11 +101,20 @@
           <div class="col-md-2"></div>
           <div class="col-md-2 text-center">
             <img src="flowerpot.png" id="flowerpot-img"/>
+            <div class="progress progress-bar-div">
+              <div class="progress-bar progress-bar-striped"
+                   role="progressbar"
+                   v-bind:style="{ width: plant_1_progress_value + '%'}"
+                   v-bind:aria-valuenow="plant_1_progress_value"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+              </div>
+            </div>
             <h2>Activity</h2>
             <div class="input-group mb-3">
-              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <input v-model="plant_1_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+                <button v-on:click="addProgressPlant1" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
               </div>
             </div>
             <h2>Bonus Activity</h2>
@@ -113,11 +122,20 @@
           <div class="col-md-1"></div>
           <div class="col-md-2 text-center">
             <img src="flowerpot.png" id="flowerpot-img"/>
+            <div class="progress progress-bar-div">
+              <div class="progress-bar progress-bar-striped"
+                   role="progressbar"
+                   v-bind:style="{ width: plant_2_progress_value + '%'}"
+                   v-bind:aria-valuenow="plant_2_progress_value"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+              </div>
+            </div>
             <h2>Activity</h2>
             <div class="input-group mb-3">
-              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <input v-model="plant_2_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+                <button v-on:click="addProgressPlant2" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
               </div>
             </div>
             <h2>Bonus Activity</h2>
@@ -125,11 +143,20 @@
           <div class="col-md-1"></div>
           <div class="col-md-2 text-center">
             <img src="flowerpot.png" id="flowerpot-img"/>
+            <div class="progress progress-bar-div">
+              <div class="progress-bar progress-bar-striped"
+                   role="progressbar"
+                   v-bind:style="{ width: plant_3_progress_value + '%'}"
+                   v-bind:aria-valuenow="plant_3_progress_value"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+              </div>
+            </div>
             <h2>Activity</h2>
             <div class="input-group mb-3">
-              <input type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <input v-model="plant_3_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+                <button v-on:click="addProgressPlant3" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
               </div>
             </div>
             <h2>Bonus Activity</h2>
