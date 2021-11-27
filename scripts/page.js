@@ -1,4 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
 
   const firebaseConfig = {
   apiKey: "AIzaSyCRkfhPULJP3gdkPvfCs96bmnNpzJr3m4Y",
@@ -11,7 +12,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase
   };
 
   const firebaseApp = initializeApp(firebaseConfig);
-  console.log(firebaseApp)
+  const db = getFirestore(firebaseApp)
+  console.log(db)
             
 var appView = new Vue({
   el: '#app',
