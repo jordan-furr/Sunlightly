@@ -36,6 +36,11 @@
   color: lemonchiffon;
 }
 
+.flowerpot-margin {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 .sunlightly-gradient {
   height: 250px;
   margin: 0px;
@@ -61,7 +66,7 @@
   color: lemonchiffon;
 }
 #how-to {
-  
+
 }
 
 #main-screen-div {
@@ -80,8 +85,18 @@
   width: 200px;
   height: 175px;
 }
+.display-img {
+  position: absolute;
+  width: 150px;
+  height: 225px;
+  top: 0px;
+  left: 50px;
+}
+.flowerpot-shift {
+  margin-top: 200px;
+}
 #flowerpots-div {
-  margin-top: 150px;
+  margin-top: 0px;
 }
 .progress-bar-div {
   margin-top: 10px;

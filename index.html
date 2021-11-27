@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-    
+
   </head>
   <body>
     <div id='app'>
@@ -87,9 +87,9 @@
         <div class="row" id="sunlight-input">
           <div class="col-md-2">
             <div class="input-group mb-3">
-              <input type="text" class="form-control input-sm" placeholder="Input hours spent outdoors" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <input type="text" v-model="added_sunlight" class="form-control input-sm" placeholder="Input hours spent outdoors" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+                <button v-on:click="addSunlight" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
               </div>
             </div>
           </div>
@@ -97,118 +97,62 @@
         <div>
           <button v-on:click="addPlant" id="add-plant-button" type="button" class="btn btn-success btn-lg">Add Plants</button>
         </div>
+
         <div class="row" id="flowerpots-div">
-          <div class="col-md-2"></div>
-          <div class="col-md-2 text-center">
-            <img src="flowerpot.png" id="flowerpot-img"/>
-            <div class="progress progress-bar-div">
+          <div v-for="(plant, index) in active_plants" class="col-md-2 text-center flowerpot-margin">
+            <img src="images/flowerpot.png" id="flowerpot-img" class="flowerpot-shift"/>
+            <img v-if="plant.name != 'Empty'" v-bind:src="bindImage(index)" class="display-img"/>
+            <div class="d-flex justify-content-center flex-row">
+              <h2 class="p-2">{{plant.name}}</h2>
+              <button v-if="plant.name != 'Empty'" v-on:click="removePlant(index)" class="btn btn-danger btn-sm" type="button">Remove</button>
+            </div>
+            <div v-if="plant.name != 'Empty'" class="progress progress-bar-div">
               <div class="progress-bar progress-bar-striped"
                    role="progressbar"
-                   v-bind:style="{ width: plant_1_progress_value + '%'}"
-                   v-bind:aria-valuenow="plant_1_progress_value"
+                   v-bind:style="{ width: plant.growth + '%'}"
+                   v-bind:aria-valuenow="plant.growth"
                    aria-valuemin="0"
                    aria-valuemax="100">
               </div>
             </div>
-            <h2>Activity</h2>
-            <div class="input-group mb-3">
-              <input v-model="plant_1_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <h2>{{plant.activity}}</h2>
+            <div v-if="plant.name != 'Empty'" class="input-group mb-3">
+              <input v-model="plant.added_value" type="text" class="form-control input-sm" v-bind:placeholder="'Input hours spent on ' + plant.activity" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
-                <button v-on:click="addProgressPlant1" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
+                <button v-on:click="addWater(index)" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
               </div>
             </div>
-            <h2>Bonus Activity</h2>
+            <div class="d-flex justify-content-center flex-row">
+              <h2 class="p-2">Bonus: </h2>
+              <button v-if="plant.name != 'Empty'" v-on:click="addBonus(index)" class="btn btn-primary btn-lg" type="button">{{plant.current_bonus}}</button>
+            </div>
           </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-2 text-center">
-            <img src="flowerpot.png" id="flowerpot-img"/>
-            <div class="progress progress-bar-div">
-              <div class="progress-bar progress-bar-striped"
-                   role="progressbar"
-                   v-bind:style="{ width: plant_2_progress_value + '%'}"
-                   v-bind:aria-valuenow="plant_2_progress_value"
-                   aria-valuemin="0"
-                   aria-valuemax="100">
-              </div>
-            </div>
-            <h2>Activity</h2>
-            <div class="input-group mb-3">
-              <input v-model="plant_2_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <div class="input-group-append">
-                <button v-on:click="addProgressPlant2" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
-              </div>
-            </div>
-            <h2>Bonus Activity</h2>
-          </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-2 text-center">
-            <img src="flowerpot.png" id="flowerpot-img"/>
-            <div class="progress progress-bar-div">
-              <div class="progress-bar progress-bar-striped"
-                   role="progressbar"
-                   v-bind:style="{ width: plant_3_progress_value + '%'}"
-                   v-bind:aria-valuenow="plant_3_progress_value"
-                   aria-valuemin="0"
-                   aria-valuemax="100">
-              </div>
-            </div>
-            <h2>Activity</h2>
-            <div class="input-group mb-3">
-              <input v-model="plant_3_add_progress_value" type="text" class="form-control input-sm" placeholder="Input hours spent <activity>" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <div class="input-group-append">
-                <button v-on:click="addProgressPlant3" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
-              </div>
-            </div>
-            <h2>Bonus Activity</h2>
-          </div>
-          <div class="col-md-2"></div>
         </div>
       </div>
 
       <div id="plant-selection-div" v-bind:class="plant_selection_class">
         <h1 class="display-2 selectionHeaders"><strong>Select a plant!</strong></h1>
         <div class="row">
-          <div class="col-md-3 text-center">
-            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
-            <h1>Flower type</h1>
-          </div>
-          <div class="col-md-3 text-center">
-            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
-            <h1>Flower type</h1>
-          </div>
-          <div class="col-md-3 text-center">
-            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
-            <h1>Flower type</h1>
-          </div>
-          <div class="col-md-3 text-center">
-            <img src="flower.png" class="clickable" v-on:click="selectActivity"/>
-            <h1>Flower type</h1>
+          <div v-for="(plant, index) in plants" class="col-md-3 text-center">
+            <img v-bind:src="plant[1][4]" class="clickable" v-on:click="selectActivity(index)"/>
+            <h1>{{plant[0]}}</h1>
           </div>
         </div>
       </div>
 
       <div id="activity-selection-div" v-bind:class="activity_selection_class">
         <h1 class="display-2 selectionHeaders"><strong>Select an activity for this plant!</strong></h1>
-        <div class="col-md-4 text-center activity-options">
-          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
-        </div>
-        <div class="col-md-4 text-center activity-options">
-          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
-        </div>
-        <div class="col-md-4 text-center activity-options">
-          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
-        </div>
-        <div class="col-md-4 text-center activity-options">
-          <h1 class="display-4 clickable" v-on:click="redirectMainScreen">Activity</h1>
+        <div v-for="(activity, index) in activities" class="col-md-4 text-center activity-options">
+          <h1 class="display-4 clickable font-weight-bold" v-on:click="redirectMainScreen(index)"><strong>{{activity[0]}}</strong></h1>
         </div>
       </div>
 
     </div>
 
-       
+
         <script type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
-      
+
             const firebaseConfig = {
             apiKey: "AIzaSyCRkfhPULJP3gdkPvfCs96bmnNpzJr3m4Y",
             authDomain: "sunlightly-2a739.firebaseapp.com",
