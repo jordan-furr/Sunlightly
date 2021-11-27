@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jordan-furr/Sunlightly/issues"
   },
-  "homepage": "https://github.com/jordan-furr/Sunlightly#readme"
+  "homepage": "https://github.com/jordan-furr/Sunlightly#readme",
+  "dependencies": {
+    "firebase": "^9.5.0"
+  }
 }
