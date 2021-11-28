@@ -115,7 +115,7 @@ var appView = new Vue({
             setDoc(doc(db, "users", user.uid), {
               email: this.new_email,
               uid: user.uid,
-              plantGrowth: [0, 0, 0]
+              plantGrowth: [0.0, 0.0, 0.0]
             });
 
           })
