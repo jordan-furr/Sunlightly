@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
-import { getFirestore, collection, addDoc, doc, setDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+import { getFirestore, collection, addDoc, doc, setDoc, updateDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
 
   const firebaseConfig = {
@@ -14,16 +14,14 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
 
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getFirestore(firebaseApp)
-  console.log(db)
             
   const auth = getAuth(firebaseApp)
   onAuthStateChanged(auth, user => {
     if (user != null){
-      console.log("logged in")
-      const uid = user.uid
-      appView.loggedIn(user.email)
+      console.log("user logged in")
+      appView.loggedIn(user.email, user.uid)
     }else {
-      console.log("no user")
+      console.log("no user signed in")
     }
   })
   
@@ -34,6 +32,7 @@ var appView = new Vue({
     login_email: "",
     login_password: "",
     login_class: "",
+    user_id: "",
     sign_up_class: "hidden",
     main_screen_class: "hidden",
     plant_selection_class: "hidden",
@@ -68,15 +67,20 @@ var appView = new Vue({
     ]
   },
   methods: {
-    loggedIn: function(email){
+    updateUserPlantData: function(){
+      const userRef = doc(db, "users", this.user_id);
+        updateDoc(userRef, {
+            plantGrowth: this.active_plants
+        });
+
+    },
+    loggedIn: function(email, uid){
+      this.login_email = email;
+      this.user_id = uid;
       this.login_class = "hidden";
       this.main_screen_class = ""; 
-      this.login_email = email;
     },
     sendLogin:function() {
-      console.log(this.login_email);
-      console.log(this.login_password);
-
       signInWithEmailAndPassword(auth, this.login_email, this.login_password)
         .then((userCredential) => {
           // Signed in 
@@ -90,17 +94,12 @@ var appView = new Vue({
         const errorMessage = error.message;
         alert(errorMessage)
       });      
-
-      
-
     },
     redirectSignUp:function() {
       this.login_class = "hidden";
       this.sign_up_class = "";
     },
     sendSignUp:function() {
-     
-
       if (this.new_password != this.new_confirm_password) {
         alert("Password fields must match");
       } else {
@@ -115,17 +114,15 @@ var appView = new Vue({
             setDoc(doc(db, "users", user.uid), {
               email: this.new_email,
               uid: user.uid,
-              plantGrowth: [0.0, 0.0, 0.0]
+              plantGrowth: this.active_plants
             });
-
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorMessage)
-          });      
+        });      
       }
-
     },
     logOut: function() {
       this.login_class = "";
@@ -136,15 +133,17 @@ var appView = new Vue({
         {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""}
       ];
       signOut(auth).then(() => {
-        console.log("signed out")
-        this.login_email = ""
-        this.login_password = ""
-        this.new_password = ""
-        this.new_confirm_password = ""
-        this.new_email = ""
+        resetFields()
       }).catch((error) => {
         console.log(error)
       });
+    },
+    resetFields: function(){
+      this.login_email = ""
+      this.login_password = ""
+      this.new_password = ""
+      this.new_confirm_password = ""
+      this.new_email = ""
     },
     addPlant: function() {
       this.temp_plant = {};
@@ -192,6 +191,7 @@ var appView = new Vue({
         let plant_copy = Object.assign({}, this.active_plants[plant_index]);
         plant_copy.growth = Math.min(parseInt(plant_copy.growth) + parseInt(plant_copy.added_value) * 10, 100);
         Vue.set(this.active_plants, plant_index, plant_copy);
+        this.updateUserPlantData()
       }
     },
     addBonus: function(plant_index) {
