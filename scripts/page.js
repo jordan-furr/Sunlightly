@@ -18,10 +18,8 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
   const auth = getAuth(firebaseApp)
   onAuthStateChanged(auth, user => {
     if (user != null){
-      console.log("user logged in")
       appView.loggedIn(user.email, user.uid)
     }else {
-      console.log("no user signed in")
     }
   })
   
@@ -84,15 +82,9 @@ var appView = new Vue({
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
+        var data = docSnap.data()
+        this.active_plants = data["plantGrowth"]
       }
-
-      var data = docSnap.data()
-      this.active_plants = data["plantGrowth"]
 
     },
     sendLogin:function() {
@@ -100,7 +92,6 @@ var appView = new Vue({
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          console.log(user)
           this.login_class = "hidden";
           this.main_screen_class = "";
       })
@@ -123,7 +114,6 @@ var appView = new Vue({
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            console.log(user)
             this.sign_up_class = "hidden";
             this.main_screen_class = "";
             setDoc(doc(db, "users", user.uid), {
@@ -164,9 +154,11 @@ var appView = new Vue({
       this.temp_plant = {};
       this.main_screen_class = "hidden";
       this.plant_selection_class = "";
+      this.updateUserPlantData()
     },
     removePlant: function(plant_index) {
       Vue.set(this.active_plants, plant_index, {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""})
+      this.updateUserPlantData()
     },
     selectActivity: function(plant_index) {
       this.temp_plant.name = this.plants[plant_index][0];
@@ -174,6 +166,7 @@ var appView = new Vue({
       this.temp_plant.growth = 0;
       this.plant_selection_class = "hidden";
       this.activity_selection_class = "";
+      this.updateUserPlantData()
     },
     redirectMainScreen: function(activity_index) {
       this.temp_plant.activity = this.activities[activity_index][0];
@@ -188,6 +181,7 @@ var appView = new Vue({
       }
       this.activity_selection_class = "hidden";
       this.main_screen_class = "";
+      this.updateUserPlantData()
     },
     addSunlight: function() {
       if (!isNaN(this.added_sunlight))
@@ -197,6 +191,7 @@ var appView = new Vue({
             let plant_copy = Object.assign({}, this.active_plants[i]);
             plant_copy.growth = Math.min(parseInt(plant_copy.growth) + (parseInt(this.added_sunlight) * 5), 100);
             Vue.set(this.active_plants, i, plant_copy);
+            this.updateUserPlantData()
           }
         }
       }
@@ -215,9 +210,11 @@ var appView = new Vue({
       plant_copy.current_bonus = new_bonus;
       plant_copy.growth = Math.min(parseInt(plant_copy.growth) + 30, 100);
       Vue.set(this.active_plants, plant_index, plant_copy);
+      this.updateUserPlantData()
     },
     bindImage: function(plant_index) {
       if (this.active_plants[plant_index].name != "Empty") {
+        this.updateUserPlantData()
         return this.active_plants[plant_index].images[Math.floor(4 * (this.active_plants[plant_index].growth / 100.0))];
       } else {
         return "";

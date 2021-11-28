@@ -78,7 +78,7 @@
             <h1 class="main-page-headers" id="sunlightly-logo">Sunlightly</h1>
           </div>
           <div class="col-md-4">
-            <h1 class="main-page-headers" style="text-align:center;">{{ new_email === "" ? login_email : new_email }}'s Garden </h1>
+            <h1 class="main-page-headers" style="text-align:center;">{{ new_email === "" ? login_email.split('@')[0] : new_email.split('@')[0] }}'s Garden </h1>
           </div>
           <div class="col-md-4">
             <button v-on:click="logOut" id="logout-button" type="button" class="btn btn-danger btn-lg" style="float:right;">Log Out</button>
