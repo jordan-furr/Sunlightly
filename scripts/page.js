@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
-import { getFirestore, collection, addDoc, doc, setDoc, updateDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+import { getFirestore, collection, addDoc, doc, setDoc, updateDoc, getDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
 
   const firebaseConfig = {
@@ -74,11 +74,26 @@ var appView = new Vue({
         });
 
     },
-    loggedIn: function(email, uid){
+    async loggedIn(email, uid){
       this.login_email = email;
       this.user_id = uid;
       this.login_class = "hidden";
       this.main_screen_class = ""; 
+
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+
+      var data = docSnap.data()
+      this.active_plants = data["plantGrowth"]
+
     },
     sendLogin:function() {
       signInWithEmailAndPassword(auth, this.login_email, this.login_password)
@@ -133,7 +148,7 @@ var appView = new Vue({
         {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""}
       ];
       signOut(auth).then(() => {
-        resetFields()
+        this.resetFields()
       }).catch((error) => {
         console.log(error)
       });
