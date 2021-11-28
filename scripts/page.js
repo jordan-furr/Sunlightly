@@ -14,7 +14,7 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
 
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getFirestore(firebaseApp)
-            
+
   const auth = getAuth(firebaseApp)
   onAuthStateChanged(auth, user => {
     if (user != null){
@@ -22,7 +22,7 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
     }else {
     }
   })
-  
+
 
 var appView = new Vue({
   el: '#app',
@@ -43,7 +43,9 @@ var appView = new Vue({
       ["Sports", ["Play Basketball", "Play Soccer", "Play Tennis"]],
       ["Hiking", ["Visit Birds Hill Nature Area", "Walk the Ann Arbor Ramble Trail", "Hike the Saginaw Forest Loop"]],
       ["Touring", ["Visit the University of Michigan Museum of Art", "Eat at Zingerman's Delicatessen", "Visit the Ann Arbor Hands-On Museum"]],
-      ["Wellness", ["Meditate Outside", "Hang Out with a Friend Outside", "Go Birdwatching"]]
+      ["Wellness", ["Meditate Outside", "Hang Out with a Friend Outside", "Go Birdwatching"]],
+      ["Adventure", ["Play Paintballl at Futureball", "Zipline at Winchell Park", "Go Rockclimbing at Planet Rock"]],
+      ["Social", ["Talk with a Friend While Walking", "Hang a Hammock with a Friend", "Go to a Umich Football Game"]]
     ],
     plants: [
       ["Rose", ["images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png"]],
@@ -76,21 +78,21 @@ var appView = new Vue({
       this.login_email = email;
       this.user_id = uid;
       this.login_class = "hidden";
-      this.main_screen_class = ""; 
+      this.main_screen_class = "";
 
       const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        var data = docSnap.data()
-        this.active_plants = data["plantGrowth"]
+        var data = docSnap.data();
+        this.active_plants = data["plantGrowth"];
       }
 
     },
     sendLogin:function() {
       signInWithEmailAndPassword(auth, this.login_email, this.login_password)
         .then((userCredential) => {
-          // Signed in 
+          // Signed in
           const user = userCredential.user;
           this.login_class = "hidden";
           this.main_screen_class = "";
@@ -99,7 +101,7 @@ var appView = new Vue({
         const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage)
-      });      
+      });
     },
     redirectSignUp:function() {
       this.login_class = "hidden";
@@ -112,7 +114,7 @@ var appView = new Vue({
 
         createUserWithEmailAndPassword(auth, this.new_email, this.new_password)
           .then((userCredential) => {
-            // Signed in 
+            // Signed in
             const user = userCredential.user;
             this.sign_up_class = "hidden";
             this.main_screen_class = "";
@@ -126,7 +128,7 @@ var appView = new Vue({
             const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorMessage)
-        });      
+        });
       }
     },
     logOut: function() {
@@ -151,10 +153,20 @@ var appView = new Vue({
       this.new_email = ""
     },
     addPlant: function() {
-      this.temp_plant = {};
-      this.main_screen_class = "hidden";
-      this.plant_selection_class = "";
-      this.updateUserPlantData()
+      let num_plants = 0;
+      for (let i = 0; i < 3; i++) {
+        if (this.active_plants[i].name != "Empty") {
+          num_plants += 1;
+        }
+      }
+      if (num_plants < 3) {
+        this.temp_plant = {};
+        this.main_screen_class = "hidden";
+        this.plant_selection_class = "";
+        this.updateUserPlantData();
+      } else {
+        alert("All Flowerpots Full");
+      }
     },
     removePlant: function(plant_index) {
       Vue.set(this.active_plants, plant_index, {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""})
@@ -205,7 +217,7 @@ var appView = new Vue({
       }
     },
     addBonus: function(plant_index) {
-      new_bonus = this.active_plants[plant_index].bonuses[Math.floor(Math.random()*this.active_plants[plant_index].bonuses.length)];
+      let new_bonus = this.active_plants[plant_index].bonuses[Math.floor(Math.random()*this.active_plants[plant_index].bonuses.length)];
       let plant_copy = Object.assign({}, this.active_plants[plant_index]);
       plant_copy.current_bonus = new_bonus;
       plant_copy.growth = Math.min(parseInt(plant_copy.growth) + 30, 100);
