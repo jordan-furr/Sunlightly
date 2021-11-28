@@ -1,5 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
 
   const firebaseConfig = {
   apiKey: "AIzaSyCRkfhPULJP3gdkPvfCs96bmnNpzJr3m4Y",
@@ -15,6 +16,16 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-
   const db = getFirestore(firebaseApp)
   console.log(db)
             
+  const auth = getAuth(firebaseApp)
+  onAuthStateChanged(auth, user => {
+    if (user != null){
+      console.log("logged in")
+    }else {
+      console.log("no user")
+    }
+  })
+  
+
 var appView = new Vue({
   el: '#app',
   data: {
@@ -60,6 +71,11 @@ var appView = new Vue({
       console.log(this.login_password);
       this.login_class = "hidden";
       this.main_screen_class = "";
+
+      
+      
+     
+
     },
     redirectSignUp:function() {
       this.login_class = "hidden";
