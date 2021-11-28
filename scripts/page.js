@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
-import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
+import { getFirestore, collection, addDoc, doc, setDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
 
   const firebaseConfig = {
   apiKey: "AIzaSyCRkfhPULJP3gdkPvfCs96bmnNpzJr3m4Y",
@@ -21,6 +21,7 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'htt
     if (user != null){
       console.log("logged in")
       const uid = user.uid
+      appView.loggedIn(user.email)
     }else {
       console.log("no user")
     }
@@ -67,17 +68,30 @@ var appView = new Vue({
     ]
   },
   methods: {
+    loggedIn: function(email){
+      this.login_class = "hidden";
+      this.main_screen_class = ""; 
+      this.login_email = email;
+    },
     sendLogin:function() {
       console.log(this.login_email);
       console.log(this.login_password);
-      this.login_class = "hidden";
-      this.main_screen_class = "";
 
-
+      signInWithEmailAndPassword(auth, this.login_email, this.login_password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          console.log(user)
+          this.login_class = "hidden";
+          this.main_screen_class = "";
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage)
+      });      
 
       
-      
-     
 
     },
     redirectSignUp:function() {
@@ -85,34 +99,33 @@ var appView = new Vue({
       this.sign_up_class = "";
     },
     sendSignUp:function() {
+     
+
       if (this.new_password != this.new_confirm_password) {
         alert("Password fields must match");
       } else {
 
-      var success = false
+        createUserWithEmailAndPassword(auth, this.new_email, this.new_password)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user)
+            this.sign_up_class = "hidden";
+            this.main_screen_class = "";
+            setDoc(doc(db, "users", user.uid), {
+              email: this.new_email,
+              uid: user.uid,
+              plantGrowth: [0, 0, 0]
+            });
 
-      createUserWithEmailAndPassword(auth, this.new_email, this.new_password)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          console.log(user)
-          success = true
-          
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage)
-          alert(errorMessage)
-        });
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage)
+          });      
+      }
 
-      
-      if (success) {
-        this.sign_up_class = "hidden";
-        this.main_screen_class = "";
-      }
-        
-      }
     },
     logOut: function() {
       this.login_class = "";
@@ -122,6 +135,16 @@ var appView = new Vue({
         {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""},
         {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""}
       ];
+      signOut(auth).then(() => {
+        console.log("signed out")
+        this.login_email = ""
+        this.login_password = ""
+        this.new_password = ""
+        this.new_confirm_password = ""
+        this.new_email = ""
+      }).catch((error) => {
+        console.log(error)
+      });
     },
     addPlant: function() {
       this.temp_plant = {};
