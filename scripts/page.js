@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
-import { getFirestore, collection, addDoc, doc, setDoc, updateDoc, getDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+import { getFirestore, doc, setDoc, updateDoc, getDoc} from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
 
   const firebaseConfig = {
