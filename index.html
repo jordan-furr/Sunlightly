@@ -134,7 +134,7 @@
         <h1 class="display-2 selectionHeaders"><strong>Select a plant!</strong></h1>
         <div class="row">
           <div v-for="(plant, index) in plants" class="col-md-3 text-center">
-            <img v-bind:src="plant[1][4]" class="clickable" v-on:click="selectActivity(index)"/>
+            <img v-bind:src="plant[1][5]" class="clickable" v-on:click="selectActivity(index)"/>
             <h1>{{plant[0]}}</h1>
           </div>
         </div>
