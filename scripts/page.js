@@ -48,9 +48,9 @@ var appView = new Vue({
       ["Social", ["Talk with a Friend While Walking", "Hang a Hammock with a Friend", "Go to a Umich Football Game"]]
     ],
     plants: [
-      ["Rose", ["images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png"]],
-      ["Daffodil", ["images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png"]],
-      ["Daisy", ["images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png"]],
+      ["Marigold", ["images/plants/marigold/marigold0.png", "images/plants/marigold/marigold1.png", "images/plants/marigold/marigold2.png", "images/plants/marigold/marigold3.png", "images/plants/marigold/marigold4.png"]],
+      ["Sunflower", ["images/plants/sunflower/sunflower0.png", "images/plants/sunflower/sunflower1.png", "images/plants/sunflower/sunflower2.png", "images/plants/sunflower/sunflower3.png", "images/plants/sunflower/sunflower4.png"]],
+      ["Daisy", ["images/plants/daisy/daisy0.png", "images/plants/daisy/daisy1.png", "images/plants/daisy/daisy2.png", "images/plants/daisy/daisy3.png", "images/plants/daisy/daisy4.png"]],
       ["Dandelion", ["images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png", "images/flower.png"]]
     ],
     temp_plant: {
