@@ -85,8 +85,9 @@
           </div>
         </div>
         <div class="row" id="sunlight-input">
-          <div class="col-md-2">
+          <div class="col-md-4">
             <div class="input-group mb-3">
+              <h2>Time Spend in the Sun:&nbsp</h2>
               <input type="text" v-model="added_sunlight" class="form-control input-sm" placeholder="Input hours spent outdoors" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
                 <button v-on:click="addSunlight" class="btn btn-primary btn-lg" type="button" id="button-addon2">Submit</button>
@@ -115,7 +116,7 @@
                    aria-valuemax="100">
               </div>
             </div>
-            <h2>{{plant.activity}}</h2>
+            <h2>Water for {{plant.activity}} Time</h2>
             <div v-if="plant.name != 'Empty'" class="input-group mb-3">
               <input v-model="plant.added_value" type="text" class="form-control input-sm" v-bind:placeholder="'Input hours spent on ' + plant.activity" aria-label="Recipient's username" aria-describedby="button-addon2">
               <div class="input-group-append">
@@ -147,7 +148,7 @@
         </div>
       </div>
     </div>
-    
+
     <script type="module" src="scripts/page.js"></script>
   </body>
 </html>
