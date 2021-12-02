@@ -50,7 +50,8 @@ var appView = new Vue({
     plants: [
       ["Marigold", ["images/plants/marigold/marigold0.png", "images/plants/marigold/marigold1.png", "images/plants/marigold/marigold2.png", "images/plants/marigold/marigold3.png", "images/plants/marigold/marigold4.png", "images/plants/marigold/marigold-icon.png"]],
       ["Sunflower", ["images/plants/sunflower/sunflower0.png", "images/plants/sunflower/sunflower1.png", "images/plants/sunflower/sunflower2.png", "images/plants/sunflower/sunflower3.png", "images/plants/sunflower/sunflower4.png", "images/plants/sunflower/sunflower-icon.png"]],
-      ["Daisy", ["images/plants/daisy/daisy0.png", "images/plants/daisy/daisy1.png", "images/plants/daisy/daisy2.png", "images/plants/daisy/daisy3.png", "images/plants/daisy/daisy4.png", "images/plants/daisy/daisy-icon.png"]]
+      ["Daisy", ["images/plants/daisy/daisy0.png", "images/plants/daisy/daisy1.png", "images/plants/daisy/daisy2.png", "images/plants/daisy/daisy3.png", "images/plants/daisy/daisy4.png", "images/plants/daisy/daisy-icon.png"]],
+      ["Piranha", ["images/plants/piranha/piranha0.png", "images/plants/piranha/piranha1.png", "images/plants/piranha/piranha2.png", "images/plants/piranha/piranha3.png", "images/plants/piranha/piranha4.png", "images/plants/piranha/piranha-icon.png"]]
     ],
     temp_plant: {
       name: "",
