@@ -121,6 +121,18 @@
   background-color: #92e29f;
   padding: 20px;
 }
+
+#stats-div {
+    height: 200%;
+    background-color: #92e29f;
+    padding: 20px;
+}
+
 .activity-options {
   margin-bottom: 125px;
+}
+
+#stats-plant {
+    display: flex;
+    margin: 10px;
 }

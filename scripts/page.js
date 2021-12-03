@@ -35,6 +35,7 @@ var appView = new Vue({
     main_screen_class: "hidden",
     plant_selection_class: "hidden",
     activity_selection_class: "hidden",
+    stats_class: "hidden",
     new_email: "",
     new_password: "",
     new_confirm_password: "",
@@ -233,5 +234,13 @@ var appView = new Vue({
         return "";
       }
     },
+    openStats: function() {
+        this.main_screen_class = "hidden";
+        this.stats_class = "";
+	},
+    closeStats: function() {
+        this.main_screen_class = "";
+        this.stats_class = "hidden";
+	}
   }
 })
