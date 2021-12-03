@@ -152,21 +152,30 @@
       <div id="stats-div" v-bind:class="stats_class">
           <div class="row">
               <div class="col-sm">
+                  <button v-on:click="resetStats" id="statsreset-button" type="button" class="btn btn-warning btn-lg" style="float:left;">Reset Stats</button>
               </div>
               <div class="col-sm">
-                  <h1 style="text-align:center;">Statistics</h1>
+                  <h1 class="stats-font" style="text-align:center;">Statistics</h1>
               </div>
               <div class="col-sm">
                   <button v-on:click="closeStats" id="statsclose-button" type="button" class="btn btn-danger btn-lg" style="float:right;">Close</button>
               </div>
           </div>
 
-          <h1>
-              Total Sunlight Hours:
+          <h1 class="stats-font">
+              Total Sunlight Hours: {{stats.total}}
+          </h1>
+          <h1 class="stats-font">
+              Plant Statistics:
           </h1>
           <div v-for="(plant, index) in plants" id="stats-plant">
               <img v-bind:src="plant[1][5]" />
-              <h1>Total {{plant[0]}}s Grown: </h1>
+              <h1 class="stats-font">{{plant[0]}}: </h1>
+              <h1 class="stats-font">Total Grown = {{stats.grown[index]}}</h1>
+          </div>
+          <div v-for="(activity, index) in activities" id="stats-plant">
+              <h1 class="stats-font">{{activity[0]}}: </h1>
+              <h1 class="stats-font">Total Hours = {{stats.active_hrs[index]}}</h1>
           </div>
 
 

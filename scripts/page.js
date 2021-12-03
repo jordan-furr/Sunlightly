@@ -45,7 +45,7 @@ var appView = new Vue({
       ["Hiking", ["Visit Birds Hill Nature Area", "Walk the Ann Arbor Ramble Trail", "Hike the Saginaw Forest Loop"]],
       ["Touring", ["Visit the University of Michigan Museum of Art", "Eat at Zingerman's Delicatessen", "Visit the Ann Arbor Hands-On Museum"]],
       ["Wellness", ["Meditate Outside", "Hang Out with a Friend Outside", "Go Birdwatching"]],
-      ["Adventure", ["Play Paintballl at Futureball", "Zipline at Winchell Park", "Go Rockclimbing at Planet Rock"]],
+      ["Adventure", ["Play Paintball at Futureball", "Zipline at Winchell Park", "Go Rockclimbing at Planet Rock"]],
       ["Social", ["Talk with a Friend While Walking", "Hang a Hammock with a Friend", "Go to a Umich Football Game"]]
     ],
     plants: [
@@ -57,22 +57,36 @@ var appView = new Vue({
     ],
     temp_plant: {
       name: "",
+      plant_num: 0,
       images: [],
       growth: 0,
       activity: "",
+      activity_num: 0,
       bonuses: [],
     },
     active_plants: [
-      {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""},
-      {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""},
-      {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""}
-    ]
+      {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num: 0, bonuses: [], added_value: 0, current_bonus: ""},
+      {name: "Empty", images: [], growth: 0, activity: "", activity_num: 0, bonuses: [], added_value: 0, current_bonus: ""},
+      {name: "Empty", images: [], growth: 0, activity: "", activity_num: 0, bonuses: [], added_value: 0, current_bonus: ""}
+    ],
+    stats: {
+      total: 0,
+      grown: [0, 0, 0, 0, 0, 0],
+      active_hrs: [0, 0, 0, 0, 0, 0]
+	}
   },
   methods: {
     updateUserPlantData: function(){
       const userRef = doc(db, "users", this.user_id);
         updateDoc(userRef, {
             plantGrowth: this.active_plants
+        });
+
+    },
+    updateUserStats: function(){
+      const userRef = doc(db, "users", this.user_id);
+        updateDoc(userRef, {
+            allStats: this.stats
         });
 
     },
@@ -88,6 +102,7 @@ var appView = new Vue({
       if (docSnap.exists()) {
         var data = docSnap.data();
         this.active_plants = data["plantGrowth"];
+        this.stats = data["allStats"];
       }
 
     },
@@ -123,7 +138,8 @@ var appView = new Vue({
             setDoc(doc(db, "users", user.uid), {
               email: this.new_email,
               uid: user.uid,
-              plantGrowth: this.active_plants
+              plantGrowth: this.active_plants,
+              allStats: this.stats
             });
           })
           .catch((error) => {
@@ -137,9 +153,9 @@ var appView = new Vue({
       this.login_class = "";
       this.main_screen_class = "hidden";
       this.active_plants = [
-        {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""},
-        {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""},
-        {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""}
+        {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""},
+        {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""},
+        {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""}
       ];
       signOut(auth).then(() => {
         this.resetFields()
@@ -171,11 +187,12 @@ var appView = new Vue({
       }
     },
     removePlant: function(plant_index) {
-      Vue.set(this.active_plants, plant_index, {name: "Empty", images: [], growth: 0, activity: "", bonuses: [], added_value: 0, current_bonus: ""})
+      Vue.set(this.active_plants, plant_index, {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""})
       this.updateUserPlantData()
     },
     selectActivity: function(plant_index) {
       this.temp_plant.name = this.plants[plant_index][0];
+      this.temp_plant.plant_num = plant_index;
       this.temp_plant.images = this.plants[plant_index][1];
       this.temp_plant.growth = 0;
       this.plant_selection_class = "hidden";
@@ -184,6 +201,7 @@ var appView = new Vue({
     },
     redirectMainScreen: function(activity_index) {
       this.temp_plant.activity = this.activities[activity_index][0];
+      this.temp_plant.activity_num = activity_index;
       this.temp_plant.bonuses = this.activities[activity_index][1];
       this.temp_plant.current_bonus = this.temp_plant.bonuses[Math.floor(Math.random()*this.temp_plant.bonuses.length)];
       this.added_value = 0;
@@ -200,9 +218,17 @@ var appView = new Vue({
     addSunlight: function() {
       if (!isNaN(this.added_sunlight))
       {
+        this.stats.total = parseInt(this.stats.total) + parseInt(this.added_sunlight);
+        this.updateUserStats();
         for (let i = 0; i < 3; i++) {
           if (this.active_plants[i].name != "Empty") {
             let plant_copy = Object.assign({}, this.active_plants[i]);
+            if (plant_copy.growth != 100) {
+                if (Math.min(parseInt(plant_copy.growth) + (parseInt(this.added_sunlight) * 5), 100) == 100) {
+                    this.stats.grown[this.active_plants[i].plant_num] = parseInt(this.stats.grown[this.active_plants[i].plant_num]) + parseInt(1);
+                    this.updateUserStats();
+		        }
+	        }
             plant_copy.growth = Math.min(parseInt(plant_copy.growth) + (parseInt(this.added_sunlight) * 5), 100);
             Vue.set(this.active_plants, i, plant_copy);
             this.updateUserPlantData()
@@ -212,7 +238,15 @@ var appView = new Vue({
     },
     addWater: function(plant_index) {
       if (!isNaN(this.active_plants[plant_index].added_value)) {
+        this.stats.active_hrs[this.active_plants[plant_index].activity_num] = parseInt(this.stats.active_hrs[this.active_plants[plant_index].activity_num]) + parseInt(this.active_plants[plant_index].added_value);
+        this.updateUserStats();
         let plant_copy = Object.assign({}, this.active_plants[plant_index]);
+        if (plant_copy.growth != 100) {
+            if (Math.min(parseInt(plant_copy.growth) + parseInt(plant_copy.added_value) * 10, 100) == 100) {
+                this.stats.grown[this.active_plants[plant_index].plant_num] = parseInt(this.stats.grown[this.active_plants[plant_index].plant_num]) + parseInt(1);
+                this.updateUserStats();
+		    }
+	    }
         plant_copy.growth = Math.min(parseInt(plant_copy.growth) + parseInt(plant_copy.added_value) * 10, 100);
         Vue.set(this.active_plants, plant_index, plant_copy);
         this.updateUserPlantData()
@@ -222,6 +256,12 @@ var appView = new Vue({
       let new_bonus = this.active_plants[plant_index].bonuses[Math.floor(Math.random()*this.active_plants[plant_index].bonuses.length)];
       let plant_copy = Object.assign({}, this.active_plants[plant_index]);
       plant_copy.current_bonus = new_bonus;
+      if (plant_copy.growth != 100) {
+         if (Math.min(parseInt(plant_copy.growth) + 30, 100) == 100) {
+            this.stats.grown[this.active_plants[plant_index].plant_num] = parseInt(this.stats.grown[this.active_plants[plant_index].plant_num]) + parseInt(1);
+            this.updateUserStats();
+		 }
+	  }
       plant_copy.growth = Math.min(parseInt(plant_copy.growth) + 30, 100);
       Vue.set(this.active_plants, plant_index, plant_copy);
       this.updateUserPlantData()
@@ -241,6 +281,14 @@ var appView = new Vue({
     closeStats: function() {
         this.main_screen_class = "";
         this.stats_class = "hidden";
+	},
+    resetStats: function() {
+        this.stats = {
+            total: 0,
+            grown: [0, 0, 0, 0, 0, 0],
+            active_hrs: [0, 0, 0, 0, 0, 0]
+	    };
+        this.updateUserStats();
 	}
   }
 })
