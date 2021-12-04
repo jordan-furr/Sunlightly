@@ -145,7 +145,7 @@
       <div id="activity-selection-div" v-bind:class="activity_selection_class">
         <h1 class="display-2 selectionHeaders"><strong>Select an activity for this plant!</strong></h1>
         <div v-for="(activity, index) in activities" class="col-md-4 text-center activity-options">
-          <h1 class="display-4 clickable font-weight-bold" v-on:click="redirectMainScreen(index)"><strong>{{activity[0]}}</strong></h1>
+          <h1 class="display-4 clickable font-weight-bold activityText" v-on:click="redirectMainScreen(index)"><strong>{{activity[0]}}</strong></h1>
         </div>
       </div>
 

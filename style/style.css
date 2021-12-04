@@ -115,6 +115,9 @@
   margin-top: 10px;
   margin-bottom: 60px;
 }
+.activityText {
+  outline: 3px solid black;
+}
 
 #activity-selection-div {
   height: 100%;
