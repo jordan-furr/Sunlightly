@@ -18,7 +18,8 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
   const auth = getAuth(firebaseApp)
   onAuthStateChanged(auth, user => {
     if (user != null){
-      appView.loggedIn(user.email, user.uid)
+      appView.loggedIn(user.email, user.uid);
+      $('body').addClass("page_background");
     }else {
     }
   })
@@ -40,13 +41,14 @@ var appView = new Vue({
     new_password: "",
     new_confirm_password: "",
     added_sunlight: 0,
+    page_background: "",
     activities: [
-      ["Sports", ["Play Basketball", "Play Soccer", "Play Tennis"]],
-      ["Hiking", ["Visit Birds Hill Nature Area", "Walk the Ann Arbor Ramble Trail", "Hike the Saginaw Forest Loop"]],
-      ["Touring", ["Visit the University of Michigan Museum of Art", "Eat at Zingerman's Delicatessen", "Visit the Ann Arbor Hands-On Museum"]],
-      ["Wellness", ["Meditate Outside", "Hang Out with a Friend Outside", "Go Birdwatching"]],
-      ["Adventure", ["Play Paintball at Futureball", "Zipline at Winchell Park", "Go Rockclimbing at Planet Rock"]],
-      ["Social", ["Talk with a Friend While Walking", "Hang a Hammock with a Friend", "Go to a Umich Football Game"]]
+      ["Sports", ["Play Basketball", "Play Soccer", "Play Tennis", "Play Hockey", "Play Volleyball"]],
+      ["Hiking", ["Visit Birds Hill Nature Area", "Walk the Ann Arbor Ramble Trail", "Hike the Saginaw Forest Loop", "Hike the Argo Nature Area", "Hike the Barton Nature Area"]],
+      ["Touring", ["Visit the University of Michigan Museum of Art", "Eat at Zingerman's Delicatessen", "Visit the Ann Arbor Hands-On Museum", "Go to the Hands On Museum", "Visit the Matthaei Botanical Gardens"]],
+      ["Wellness", ["Meditate Outside", "Hang Out with a Friend Outside", "Go Birdwatching", "Go Cloudwatching", "Take a Break Outside"]],
+      ["Adventure", ["Play Paintball at Futureball", "Zipline at Winchell Park", "Go Rockclimbing at Planet Rock", "Go Ziplining at TreeRunner Adventure Park", "Go Skydiving at Skydive Tecumseh"]],
+      ["Social", ["Talk with a Friend While Walking", "Hang a Hammock with a Friend", "Go to a Umich Football Game", "Attend a Local Party", "Do a Puzzle with Friends"]]
     ],
     plants: [
       ["Marigold", ["images/plants/marigold/marigold0.png", "images/plants/marigold/marigold1.png", "images/plants/marigold/marigold2.png", "images/plants/marigold/marigold3.png", "images/plants/marigold/marigold4.png", "images/plants/marigold/marigold-icon.png"]],
@@ -113,6 +115,7 @@ var appView = new Vue({
           const user = userCredential.user;
           this.login_class = "hidden";
           this.main_screen_class = "";
+          this.page_background = "page_background";
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -253,7 +256,11 @@ var appView = new Vue({
       }
     },
     addBonus: function(plant_index) {
-      let new_bonus = this.active_plants[plant_index].bonuses[Math.floor(Math.random()*this.active_plants[plant_index].bonuses.length)];
+      let old_bonus = this.active_plants[plant_index].current_bonus;
+      let new_bonus = old_bonus;
+      while (old_bonus === new_bonus) {
+        new_bonus = this.active_plants[plant_index].bonuses[Math.floor(Math.random()*this.active_plants[plant_index].bonuses.length)];
+      }
       let plant_copy = Object.assign({}, this.active_plants[plant_index]);
       plant_copy.current_bonus = new_bonus;
       if (plant_copy.growth != 100) {

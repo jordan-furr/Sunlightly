@@ -85,12 +85,27 @@
   width: 200px;
   height: 175px;
 }
+.image_holder {
+  position: relative;
+  display: block;
+}
 .display-img {
+  /* position: absolute;
+  width: 150px;
+  height: 225px;
+  top: 30px;
+  left: 50px; */
   position: absolute;
   width: 150px;
   height: 225px;
   top: 30px;
   left: 50px;
+  padding: 0px;
+  margin: 0px;
+}
+.fix-width {
+  -ms-flex: 0 0 230px;
+  flex: 0 0 230px;
 }
 .flowerpot-shift {
   margin-top: 200px;
@@ -133,6 +148,10 @@
 
 .activity-options {
   margin-bottom: 125px;
+}
+
+.page_background {
+  background-color: #92e29f;
 }
 
 #stats-plant {
