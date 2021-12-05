@@ -141,7 +141,7 @@
 }
 
 #stats-div {
-    height: 300%;
+    height: 3000px;
     background-color: #92e29f;
     padding: 20px;
 }
@@ -163,4 +163,12 @@
 .stats-font {
     font-size: 40px;
     margin: 20px;
+}
+
+.stats-header {
+    font-size: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
