@@ -107,6 +107,9 @@
   -ms-flex: 0 0 230px;
   flex: 0 0 230px;
 }
+.login-redirect {
+  margin-top: 100px;
+}
 .flowerpot-shift {
   margin-top: 200px;
 }

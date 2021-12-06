@@ -128,6 +128,10 @@ var appView = new Vue({
       this.login_class = "hidden";
       this.sign_up_class = "";
     },
+    redirectLogin:function() {
+      this.login_class = "";
+      this.sign_up_class = "hidden";
+    },
     sendSignUp:function() {
       if (this.new_password != this.new_confirm_password) {
         alert("Password fields must match");
