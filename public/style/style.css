@@ -12,6 +12,11 @@
       )
 }
 
+html, body {
+  overflow-y: hidden;
+}
+
+
 /*Classes*/
 /***************************************/
 .hidden {
@@ -64,9 +69,6 @@
 }
 #sunlightly-logo2 {
   color: lemonchiffon;
-}
-#how-to {
-
 }
 
 #main-screen-div {
