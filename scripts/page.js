@@ -14,20 +14,19 @@ import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, s
 
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getFirestore(firebaseApp)
-
   const auth = getAuth(firebaseApp)
   onAuthStateChanged(auth, user => {
     if (user != null){
-      appView.loggedIn(user.email, user.uid);
+      appView.loggedIn(user);
       $('body').addClass("page_background");
-    }else {
     }
   })
-
-
-var appView = new Vue({
+  
+  import { createApp } from 'vue'
+  const appView = createApp({
   el: '#app',
-  data: {
+  data() {
+    return {
     login_email: "",
     login_password: "",
     login_class: "",
@@ -77,6 +76,7 @@ var appView = new Vue({
       grown: [0, 0, 0, 0, 0, 0],
       active_hrs: [0, 0, 0, 0, 0, 0]
 	}
+  }
   },
   methods: {
     updateUserPlantData: function(){
@@ -93,21 +93,18 @@ var appView = new Vue({
         });
 
     },
-    async loggedIn(email, uid){
-      this.login_email = email;
-      this.user_id = uid;
+     async loggedIn(user){
+      this.login_email = user.email;
+      this.user_id = user.uid;
       this.login_class = "hidden";
       this.main_screen_class = "";
-
-      const docRef = doc(db, "users", uid);
+      const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-
       if (docSnap.exists()) {
         var data = docSnap.data();
         this.active_plants = data["plantGrowth"];
         this.stats = data["allStats"];
-      }
-
+      }      
     },
     sendLogin:function() {
       signInWithEmailAndPassword(auth, this.login_email, this.login_password)
@@ -195,7 +192,7 @@ var appView = new Vue({
       }
     },
     removePlant: function(plant_index) {
-      Vue.set(this.active_plants, plant_index, {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""})
+      this.active_plants[plant_index] = {name: "Empty", plant_num:0, images: [], growth: 0, activity: "", activity_num:0, bonuses: [], added_value: 0, current_bonus: ""}
       this.updateUserPlantData()
     },
     selectActivity: function(plant_index) {
@@ -215,7 +212,7 @@ var appView = new Vue({
       this.added_value = 0;
       for (let i = 0; i < 3; i++) {
         if (this.active_plants[i].name === "Empty") {
-          Vue.set(this.active_plants, i, this.temp_plant);
+          this.active_plants[i] = this.temp_plant;
           break;
         }
       }
@@ -238,7 +235,7 @@ var appView = new Vue({
 		        }
 	        }
             plant_copy.growth = Math.min(parseInt(plant_copy.growth) + (parseInt(this.added_sunlight) * 5), 100);
-            Vue.set(this.active_plants, i, plant_copy);
+            this.active_plants[i] = plant_copy;
             this.updateUserPlantData()
           }
         }
@@ -256,7 +253,7 @@ var appView = new Vue({
 		    }
 	    }
         plant_copy.growth = Math.min(parseInt(plant_copy.growth) + parseInt(plant_copy.added_value) * 10, 100);
-        Vue.set(this.active_plants, plant_index, plant_copy);
+        this.active_plants[plant_index] = plant_copy;
         this.updateUserPlantData()
       }
     },
@@ -275,7 +272,7 @@ var appView = new Vue({
 		 }
 	  }
       plant_copy.growth = Math.min(parseInt(plant_copy.growth) + 30, 100);
-      Vue.set(this.active_plants, plant_index, plant_copy);
+      this.active_plants[plant_index] = plant_copy;
       this.updateUserPlantData()
     },
     bindImage: function(plant_index) {
@@ -303,4 +300,5 @@ var appView = new Vue({
         this.updateUserStats();
 	}
   }
-})
+}).mount("#app")
+
